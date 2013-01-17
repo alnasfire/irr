@@ -45,7 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Advert.cs" />
-    <Compile Include="ParseHelper.cs" />
+    <Compile Include="ParseHelperKvartirant.cs" />
+    <Compile Include="ParseHelperIRR.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

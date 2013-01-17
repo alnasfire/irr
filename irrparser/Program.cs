@@ -25,8 +25,8 @@ namespace irrparser
             File.WriteAllLines("C://Users/nasgor/My Documents/input.txt", strs);
             Console.WriteLine("File writing finished");*/
 
-            ParseHelper.Test();
-
+            ParseHelperIRR.Test();
+            
             Console.WriteLine("Finished. Pess any key...");
             Console.ReadKey();
         }
