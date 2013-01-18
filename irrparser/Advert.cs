@@ -11,6 +11,17 @@ namespace irrparser
         private String header;
         private String price;
         private String phone;
+        private Boolean agent = false;
+
+        public Boolean IsAgent()
+        {
+            return agent;
+        }
+
+        public void SetAgent(Boolean agent)
+        {
+            this.agent = agent;
+        }
         
         public String getHeader()
         {

@@ -133,8 +133,9 @@ namespace irrparser
                 if (price != null)
                     advert.setPrice(price.InnerText);
             }
-            if (advert.getPhone() == null)
-                return null;
+            HtmlNode flag = document.DocumentNode.SelectSingleNode("/html/body/div[9]/div/div/div/div[4]/div/div[2]/div[7]/div/div[6]/div[5]/div");
+            if (flag != null)
+                advert.SetAgent(true);
             return advert;
         }
 
@@ -154,12 +155,12 @@ namespace irrparser
                 phones += phone3.InnerText;
             if (phone != null && phones.Equals(""))
                 phones += phone.InnerText;   
-            String[] ph = File.ReadAllLines("C://Users/nasgor/My Documents/agentsphones.txt", Encoding.UTF8);
+            /*String[] ph = File.ReadAllLines("C://Users/nasgor/My Documents/agentsphones.txt", Encoding.UTF8);
             foreach (String s in ph)
             {
                 if (phones.Contains(s))
                     return null;
-            }
+            }*/
             return phones;
         }
 
@@ -208,19 +209,13 @@ namespace irrparser
 
         public static void Test() // Method for testing new functions DEPRICATED
         {
-            String[] adverts = File.ReadAllLines("C://Users/nasgor/My Documents/advertsIRR.txt", Encoding.UTF8);
-            String[] phones = File.ReadAllLines("C://Users/nasgor/My Documents/agentsphones.txt", Encoding.UTF8);
+
+            List<Advert> adverts = MakeAdvertsList();
             List<String> clean = new List<string>();            
-            foreach (String s in adverts)
-            {
-                bool cl = true;
-                foreach (String p in phones)
-                {
-                    if (s.Contains(p))
-                        cl = false;
-                }
-                if (cl)
-                    clean.Add(s);
+            foreach (Advert s in adverts)
+            {   
+                if (!s.IsAgent())
+                    clean.Add(s.MakeString());
             }
             File.WriteAllLines("C://Users/nasgor/My Documents/clear.txt", clean);
         }
