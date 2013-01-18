@@ -99,11 +99,14 @@ namespace irrparser
             List<Advert> adverts = new List<Advert>();
             List<String> links = ParseAdvertLinks();
             Console.WriteLine("MakeAdvertsList is begining");
+            Advert advert = null;
             foreach(String url in links)
             {
                 try
                 {
-                    adverts.Add(ParseAdvert(url));
+                    advert = ParseAdvert(url);
+                    if (advert != null)
+                        adverts.Add(advert);
                 }
                 catch
                 {
@@ -122,16 +125,16 @@ namespace irrparser
             document.LoadHtml(wClient.DownloadString(string.Format(url)));
             if (document.DocumentNode != null)
             {
-                HtmlNode header = document.DocumentNode.SelectSingleNode("/html/body/div[9]/div/div/div/div[3]/div/div[2]/h1");
-                HtmlNode phone = document.DocumentNode.SelectSingleNode("/html/body/div[9]/div/div/div/div[4]/div/div[2]/div[6]/div/div[4]/div/div");
+                HtmlNode header = document.DocumentNode.SelectSingleNode("/html/body/div[9]/div/div/div/div[3]/div/div[2]/h1");                
                 HtmlNode price = document.DocumentNode.SelectSingleNode("//*[@id=\"priceSelected\"]");
                 if (header != null)
-                    advert.setHeader(header.InnerText);
-                if (phone != null)
-                    advert.setPhone(ParsePhones());
+                    advert.setHeader(header.InnerText);                
+                advert.setPhone(ParsePhones());
                 if (price != null)
                     advert.setPrice(price.InnerText);
             }
+            if (advert.getPhone() == null)
+                return null;
             return advert;
         }
 
@@ -150,27 +153,76 @@ namespace irrparser
             if (phone3 != null && phones.Equals(""))
                 phones += phone3.InnerText;
             if (phone != null && phones.Equals(""))
-                phones += phone.InnerText;            
+                phones += phone.InnerText;   
+            String[] ph = File.ReadAllLines("C://Users/nasgor/My Documents/agentsphones.txt", Encoding.UTF8);
+            foreach (String s in ph)
+            {
+                if (phones.Contains(s))
+                    return null;
+            }
             return phones;
+        }
+
+        public static List<String> GetIRRAgentsLinks()
+        {
+            wClient.Proxy = null;
+            wClient.Encoding = System.Text.Encoding.GetEncoding("utf-8");
+            List<String> list = new List<string>();
+            document.LoadHtml(wClient.DownloadString("http://irr.by/psellers/list/realestate/"));
+            if (document.DocumentNode != null)
+            {
+                HtmlNodeCollection links = document.DocumentNode.SelectNodes("//div[@class='wrTxt']/a");                
+                if (links != null)
+                {
+                    foreach (HtmlNode node in links)
+                        list.Add(node.Attributes["href"].Value);                    
+                }
+            }
+            return list;
+        }
+
+        public static List<String> GetIRRAgentsPhones(List<String> links)
+        {
+            wClient.Proxy = null;
+            wClient.Encoding = System.Text.Encoding.GetEncoding("utf-8");            
+            List<String> phonesList = new List<string>();
+            foreach (String url in links)
+            {
+                document.LoadHtml(wClient.DownloadString(url));
+                if (document.DocumentNode != null)
+                {
+                    HtmlNode phone = document.DocumentNode.SelectSingleNode("//span[@class='phone']");
+                    HtmlNode mobile = document.DocumentNode.SelectSingleNode("//span[@class='mobile']");
+                    if (phone != null)
+                    {
+                        phonesList.Add(phone.InnerText);
+                    }
+                    if (mobile != null)
+                    {
+                        phonesList.Add(mobile.InnerText);
+                    }
+                }
+            }
+            return phonesList;
         }
 
         public static void Test() // Method for testing new functions DEPRICATED
         {
-            String[] info = File.ReadAllLines("C://Users/nasgor/My Documents/input.txt", Encoding.UTF8);
-            List<String> phones = new List<string>();
-            foreach (String s in info)
+            String[] adverts = File.ReadAllLines("C://Users/nasgor/My Documents/advertsIRR.txt", Encoding.UTF8);
+            String[] phones = File.ReadAllLines("C://Users/nasgor/My Documents/agentsphones.txt", Encoding.UTF8);
+            List<String> clean = new List<string>();            
+            foreach (String s in adverts)
             {
-                String[] attr = s.Split('&');
-                if (attr[0].Contains("аген") || attr[0].Contains("Аген") || attr[0].Contains("по фак") || attr[0].Contains("Свой угол") ||
-                    attr[0].Contains("Столица XXI век") || attr[0].Contains("Информпрогноз") || attr[0].Contains("Квартал Сити"))
+                bool cl = true;
+                foreach (String p in phones)
                 {
-                    if (attr.Length == 3 && attr[2] != null && !phones.Contains(attr[2]))
-                    {
-                        phones.Add(attr[2]);
-                    }
+                    if (s.Contains(p))
+                        cl = false;
                 }
+                if (cl)
+                    clean.Add(s);
             }
-            File.WriteAllLines("C://Users/nasgor/My Documents/agents.txt", phones);
+            File.WriteAllLines("C://Users/nasgor/My Documents/clear.txt", clean);
         }
     }
 }

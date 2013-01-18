@@ -15,17 +15,17 @@ namespace irrparser
     {
         static void Main(string[] args)
         {
-            /*List<Advert> adverts = ParseHelper.MakeAdvertsList();
+            List<Advert> adverts = ParseHelperIRR.MakeAdvertsList();
             List<String> strs = new List<string>();
             foreach(Advert a in adverts)
             {
                 strs.Add(a.MakeString());
             }
             Console.WriteLine("File writing is begining");
-            File.WriteAllLines("C://Users/nasgor/My Documents/input.txt", strs);
-            Console.WriteLine("File writing finished");*/
+            File.WriteAllLines("C://Users/nasgor/My Documents/clear.txt", strs);
+            Console.WriteLine("File writing finished");
 
-            ParseHelperIRR.Test();
+            //ParseHelperIRR.Test();
             
             Console.WriteLine("Finished. Pess any key...");
             Console.ReadKey();
