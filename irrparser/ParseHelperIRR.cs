@@ -20,7 +20,7 @@ namespace irrparser
             wClient.Proxy = null;
             wClient.Encoding = System.Text.Encoding.GetEncoding("utf-8");
             Console.WriteLine("ParseAdvertLinks is begining");
-            for (int j = 1; j < 61; j++)
+            for (int j = 1; j < 51; j++)
             {
                 if (j < 2)
                 {
@@ -155,12 +155,7 @@ namespace irrparser
                 phones += phone3.InnerText;
             if (phone != null && phones.Equals(""))
                 phones += phone.InnerText;   
-            /*String[] ph = File.ReadAllLines("C://Users/nasgor/My Documents/agentsphones.txt", Encoding.UTF8);
-            foreach (String s in ph)
-            {
-                if (phones.Contains(s))
-                    return null;
-            }*/
+            
             return phones;
         }
 
@@ -207,17 +202,22 @@ namespace irrparser
             return phonesList;
         }
 
-        public static void Test() // Method for testing new functions DEPRICATED
+        public static List<String> GetClearAdverts()
         {
-
             List<Advert> adverts = MakeAdvertsList();
-            List<String> clean = new List<string>();            
+            List<String> clean = new List<string>();
             foreach (Advert s in adverts)
-            {   
+            {
                 if (!s.IsAgent())
                     clean.Add(s.MakeString());
             }
-            File.WriteAllLines("C://Users/nasgor/My Documents/clear.txt", clean);
+            return clean;
+        }
+
+        public static void Test() // Method for testing new functions DEPRICATED
+        {
+            ParseHelperRealtOpen.ParseAdvert("http://realt.open.by/viewdetails.aspx?tableid=2001&type=4&unid=R2001CLXD6CZ");
+            //File.WriteAllLines("C://Users/nasgor/My Documents/clear.txt", GetClearAdverts());
         }
     }
 }
