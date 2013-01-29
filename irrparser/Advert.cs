@@ -55,7 +55,7 @@ namespace irrparser
 
         public String MakeString()
         {
-            return this.header + "   " + this.price + "   " + this.phone;
+            return this.getHeader() + "   " + this.getPrice() + "   " + this.getPhone();
         }
     }
 }

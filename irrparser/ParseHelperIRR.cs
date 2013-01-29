@@ -202,13 +202,12 @@ namespace irrparser
             return phonesList;
         }
 
-        public static List<String> GetClearAdverts()
-        {
-            List<Advert> adverts = MakeAdvertsList();
+        public static List<String> GetClearAdverts(List<Advert> adverts)
+        {            
             List<String> clean = new List<string>();
             foreach (Advert s in adverts)
             {
-                if (!s.IsAgent())
+                if (!s.IsAgent() && s.getPhone() != null && !s.getPhone().Equals(""))
                     clean.Add(s.MakeString());
             }
             return clean;
@@ -216,8 +215,10 @@ namespace irrparser
 
         public static void Test() // Method for testing new functions DEPRICATED
         {
-            ParseHelperRealtOpen.ParseAdvert("http://realt.open.by/viewdetails.aspx?tableid=2001&type=4&unid=R2001CLXD6CZ");
-            //File.WriteAllLines("C://Users/nasgor/My Documents/clear.txt", GetClearAdverts());
+            ParseHelperRealtOpen parser = new ParseHelperRealtOpen();            
+            File.WriteAllLines("C://Users/nasgor/My Documents/clear.txt", GetClearAdverts(parser.MakeAdvertsList()));
+
+            //parser.GetMainTableLinks();
         }
     }
 }
