@@ -45,15 +45,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Advert.cs" />
-    <Compile Include="ParseHelperHata.cs" />
-    <Compile Include="ParseHelperHatuby.cs" />
-    <Compile Include="ParseHelperKvartirant.cs" />
-    <Compile Include="ParseHelperIRR.cs" />
-    <Compile Include="ParseHelperNest.cs" />
-    <Compile Include="ParseHelperPron.cs" />
-    <Compile Include="ParseHelperRealt.cs" />
-    <Compile Include="ParseHelperRealtOpen.cs" />
+    <Compile Include="db\AdvertDAO.cs" />
+    <Compile Include="db\Connector.cs" />
+    <Compile Include="model\Advert.cs" />
+    <Compile Include="parser\ParseHelperHata.cs" />
+    <Compile Include="parser\ParseHelperHatuby.cs" />
+    <Compile Include="parser\ParseHelperKvartirant.cs" />
+    <Compile Include="parser\ParseHelperIRR.cs" />
+    <Compile Include="parser\ParseHelperNest.cs" />
+    <Compile Include="parser\ParseHelperPron.cs" />
+    <Compile Include="parser\ParseHelperRealt.cs" />
+    <Compile Include="parser\ParseHelperRealtOpen.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
